@@ -18,11 +18,11 @@ public class AmbienteMontanha extends Ambiente {
 
     @Override
     public void gerarEvento() {
-        System.out.println("⚠️ Nevasca ou deslizamento podem ocorrer nas montanhas...");
+        System.out.println("Nevasca ou deslizamento podem ocorrer nas montanhas...");
     }
 
     @Override
     public void modificarClima() {
-        System.out.println("❄️ Nevasca repentina cobre a montanha.");
+        System.out.println("Nevasca repentina cobre a montanha.");
     }
 }

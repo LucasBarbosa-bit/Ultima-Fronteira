@@ -16,7 +16,7 @@ public class EventoCriatura extends Evento {
 
     @Override
     public void executar(Personagem jogador, Ambiente local) {
-        System.out.println("⚠️ Ataque de " + tipoCriatura + "! Nível de perigo: " + nivelPerigo);
+        System.out.println("Ataque de " + tipoCriatura + "! Nível de perigo: " + nivelPerigo);
         jogador.perderVida(nivelPerigo * 10); // exemplo
     }
 }

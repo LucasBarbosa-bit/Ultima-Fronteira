@@ -17,7 +17,7 @@ public class EventoClimatico extends Evento {
     @Override
     public void executar(Personagem jogador, Ambiente local) {
         System.out.println("Evento Climático: " + tipoClima + " afeta o ambiente!");
-        // Exemplo: gastar energia extra
-        jogador.descansar(); // só um efeito placeholder
+
+        jogador.descansar();
     }
 }

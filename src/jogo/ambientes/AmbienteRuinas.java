@@ -18,11 +18,11 @@ public class AmbienteRuinas extends Ambiente {
 
     @Override
     public void gerarEvento() {
-        System.out.println("🚧 Algo se move entre os escombros... aliado ou inimigo?");
+        System.out.println("Algo se move entre os escombros... aliado ou inimigo?");
     }
 
     @Override
     public void modificarClima() {
-        System.out.println("☀️ As ruínas oferecem abrigo contra o clima.");
+        System.out.println("As ruínas oferecem abrigo contra o clima.");
     }
 }

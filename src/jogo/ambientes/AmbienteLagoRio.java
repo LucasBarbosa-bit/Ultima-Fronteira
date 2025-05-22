@@ -18,11 +18,11 @@ public class AmbienteLagoRio extends Ambiente {
 
     @Override
     public void gerarEvento() {
-        System.out.println("🌊 A correnteza aumenta... ou algo se move na água...");
+        System.out.println("A correnteza aumenta... ou algo se move na água...");
     }
 
     @Override
     public void modificarClima() {
-        System.out.println("⛈️ Chuva faz o nível da água subir.");
+        System.out.println("Chuva faz o nível da água subir.");
     }
 }

@@ -18,11 +18,11 @@ public class AmbienteCaverna extends Ambiente {
 
     @Override
     public void gerarEvento() {
-        System.out.println("⚠️ Você ouve sons estranhos ecoando pela caverna...");
+        System.out.println("Você ouve sons estranhos ecoando pela caverna...");
     }
 
     @Override
     public void modificarClima() {
-        System.out.println("💨 Correntes de ar mudam dentro da caverna.");
+        System.out.println("Correntes de ar mudam dentro da caverna.");
     }
 }

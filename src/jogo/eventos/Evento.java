@@ -6,7 +6,7 @@ import jogo.ambientes.Ambiente;
 public abstract class Evento {
     protected String nome;
     protected String descricao;
-    protected double probabilidade; // de 0.0 a 1.0
+    protected double probabilidade;
     protected String impacto;
     protected String condicaoAtivacao;
 

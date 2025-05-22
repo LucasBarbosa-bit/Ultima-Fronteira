@@ -20,7 +20,7 @@ public class EventoDescoberta extends Evento {
 
     @Override
     public void executar(Personagem jogador, Ambiente local) {
-        System.out.println("🔎 Descoberta: " + tipoDescoberta + ". Você encontrou " + recursoEncontrado.getNome());
+        System.out.println("Descoberta: " + tipoDescoberta + ". Você encontrou " + recursoEncontrado.getNome());
         jogador.getInventario().adicionarItem(recursoEncontrado);
     }
 }

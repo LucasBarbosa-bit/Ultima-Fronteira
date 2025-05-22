@@ -43,4 +43,12 @@ public class Personagem {
     }
 
     // Getters e outros métodos
+
+    public String getNome() {
+        return nome;
+    }
+
+    public int getVida() {
+        return vida;
+    }
 }
