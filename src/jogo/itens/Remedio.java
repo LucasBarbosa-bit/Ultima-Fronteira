@@ -1,5 +1,7 @@
 package jogo.itens;
 
+import jogo.personagens.Personagem;
+
 public class Remedio extends Item {
     private String tipo; // bandagem, antibiótico, analgésico
     private String efeito;
@@ -11,7 +13,7 @@ public class Remedio extends Item {
     }
 
     @Override
-    public void usar() {
+    public void usar(Personagem jogador) {
         System.out.println("Usando " + tipo + ": " + efeito);
         reduzirDurabilidade(1);
     }

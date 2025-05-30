@@ -1,5 +1,7 @@
 package jogo.itens;
 
+import jogo.personagens.Personagem;
+
 public class Arma extends Item {
     private String tipoDeArma; // corpo a corpo ou distância
     private int dano;
@@ -12,14 +14,16 @@ public class Arma extends Item {
         this.alcance = alcance;
     }
 
-    public void atacar(String alvo) {
-        System.out.println("Atacando " + alvo + " com " + nome + ", causando " + dano + " de dano.");
+
+    public void atacar(Personagem alvo) {
+        System.out.println("Atacando " + alvo.getNome() + " com " + nome + ", causando " + dano + " de dano.");
         reduzirDurabilidade(3);
+        alvo.vida(-dano);
     }
 
     @Override
-    public void usar() {
-        atacar("inimigo desconhecido");
+    public void usar(Personagem jogador) {
+        System.out.println("O personagem " + jogador.getNome() + " equipa " + super.nome);
     }
 }
 

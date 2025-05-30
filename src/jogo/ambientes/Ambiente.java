@@ -1,6 +1,7 @@
 package jogo.ambientes;
 
 import java.util.List;
+import java.util.ArrayList;
 import jogo.itens.Item;
 import jogo.personagens.Personagem;
 
@@ -10,11 +11,11 @@ public abstract class Ambiente {
     protected int dificuldadeExploracao;
     protected List<Item> recursosDisponiveis;
 
-    public Ambiente(String nome, String descricao, int dificuldadeExploracao, List<Item> recursos) {
+    public Ambiente(String nome, String descricao, int dificuldadeExploracao) {
         this.nome = nome;
         this.descricao = descricao;
         this.dificuldadeExploracao = dificuldadeExploracao;
-        this.recursosDisponiveis = recursos;
+        this.recursosDisponiveis = new ArrayList<Item>();
     }
 
     public abstract void explorar(Personagem jogador);

@@ -1,5 +1,7 @@
 package jogo.itens;
 
+import jogo.personagens.Personagem;
+
 public class Material extends Item {
     private String tipo; // madeira, pedra, metal
     private int resistencia;
@@ -16,7 +18,7 @@ public class Material extends Item {
     }
 
     @Override
-    public void usar() {
+    public void usar(Personagem jogador) {
         System.out.println("Material usado para fabricação.");
         reduzirDurabilidade(1);
     }

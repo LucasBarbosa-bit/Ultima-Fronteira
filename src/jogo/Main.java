@@ -1,10 +1,16 @@
 package jogo;
 
+import jogo.ambientes.*;
+import jogo.eventos.GerenciadorDeEventos;
+import jogo.itens.Agua;
+import jogo.itens.Item;
 import jogo.personagens.Personagem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Personagem jogador = new Personagem("Lucas");
-        System.out.println("Bem-vindo, " + jogador.getInventario().pesoAtual() + " kg de carga inicial.");
+
     }
 }

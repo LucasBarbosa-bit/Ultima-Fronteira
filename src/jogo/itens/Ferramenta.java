@@ -1,5 +1,7 @@
 package jogo.itens;
 
+import jogo.personagens.Personagem;
+
 public class Ferramenta extends Item {
     private String tipo; // ex: "machado", "isqueiro"
     private int eficiencia;
@@ -11,8 +13,10 @@ public class Ferramenta extends Item {
     }
 
     @Override
-    public void usar() {
+    public void usar(Personagem personagem) {
         System.out.println("Usando ferramenta: " + tipo + ". Eficiência: " + eficiencia);
         reduzirDurabilidade(2);
+
+
     }
 }

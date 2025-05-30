@@ -1,6 +1,7 @@
 package jogo.sistema;
 
 import jogo.itens.Item;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,12 +30,16 @@ public class Inventario {
         return itens.stream().mapToDouble(Item::getPeso).sum();
     }
 
-    public void usarItem(String nomeItem) {
+    public Item buscarItem(String nomeItem) {
         for (Item item : itens) {
             if (item.getNome().equalsIgnoreCase(nomeItem)) {
-                item.usar();
-                break;
+                return item;
             }
         }
+        return null;
+    }
+
+    public double getPesoMaximo() {
+        return pesoMaximo;
     }
 }

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Ultima-Fronteira:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Ultima_Fronteira_jar</output-path>
+    <root id="archive" name="Ultima-Fronteira.jar">
+      <element id="module-output" name="Ultima-Fronteira" />
+    </root>
+  </artifact>
+</component>

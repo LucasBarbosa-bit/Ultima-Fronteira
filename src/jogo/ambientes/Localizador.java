@@ -5,25 +5,29 @@ import java.util.*;
 import jogo.eventos.GerenciadorDeEventos;
 import jogo.personagens.Personagem;
 
-public class GerenciadorDeAmbientes {
+public class Localizador {
     private List<Ambiente> ambientesDisponiveis;
     private List<String> historicoDeMovimentacao;
     private Ambiente ambienteAtual;
 
     private GerenciadorDeEventos gerenciadorDeEventos;
 
-    public GerenciadorDeAmbientes(List<Ambiente> ambientes, GerenciadorDeEventos eventos) {
-        this.ambientesDisponiveis = ambientes;
+    public Localizador(GerenciadorDeEventos eventos) {
+        this.ambientesDisponiveis = new ArrayList<>();
+
+        this.ambientesDisponiveis.add(new AmbienteRuinas());
+        this.ambientesDisponiveis.add(new AmbienteFloresta());
+        this.ambientesDisponiveis.add(new AmbienteCaverna());
+        this.ambientesDisponiveis.add(new AmbienteMontanha());
+        this.ambientesDisponiveis.add(new AmbienteLagoRio());
+
         this.historicoDeMovimentacao = new ArrayList<>();
         this.gerenciadorDeEventos = eventos;
 
-        if (!ambientes.isEmpty()) {
-            this.ambienteAtual = ambientes.get(0); // começa no primeiro
-            this.historicoDeMovimentacao.add(ambienteAtual.getNome());
-        }
+
     }
 
-    public void mudarAmbiente(Personagem jogador, String nomeNovoAmbiente) {
+    public void mudarAmbiente(String nomeNovoAmbiente) {
         for (Ambiente ambiente : ambientesDisponiveis) {
             if (ambiente.getNome().equalsIgnoreCase(nomeNovoAmbiente)) {
                 this.ambienteAtual = ambiente;
@@ -33,6 +37,13 @@ public class GerenciadorDeAmbientes {
             }
         }
         System.out.println("Ambiente não encontrado.");
+    }
+
+    public void mudarAmbiente() {
+        if (this.ambienteAtual == null) {
+            this.ambienteAtual = ambientesDisponiveis.getFirst();
+            return;
+        }
     }
 
     public void gerarEventoAtual(Personagem jogador) {

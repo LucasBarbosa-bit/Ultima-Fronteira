@@ -22,7 +22,7 @@ public class EventoDoencaFerimento extends Evento {
     @Override
     public void executar(Personagem jogador, Ambiente local) {
         System.out.println("Evento de saúde: " + tipoCondicao);
-        jogador.perderVida(impactoVida);
+        jogador.vida(-impactoVida);
         // Simulação: perder energia também
         jogador.descansar(); // poderia ser uma penalização real
     }

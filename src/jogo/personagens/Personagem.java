@@ -1,5 +1,8 @@
 package jogo.personagens;
 
+import jogo.ambientes.Localizador;
+import jogo.eventos.GerenciadorDeEventos;
+import jogo.itens.Arma;
 import jogo.itens.Item;
 import jogo.sistema.Inventario;
 
@@ -7,6 +10,8 @@ public class Personagem {
     private String nome;
     private int vida, fome, sede, energia, sanidade;
     private Inventario inventario;
+    private Arma arma;
+    private Localizador localizador;
 
     public Personagem(String nome) {
         this.nome = nome;
@@ -15,7 +20,8 @@ public class Personagem {
         this.sede = 100;
         this.energia = 100;
         this.sanidade = 100;
-        this.inventario = new Inventario(50.0); // Exemplo de limite de peso
+        this.inventario = new Inventario(20.0);// Exemplo de limite de peso
+        this.localizador = new Localizador(new GerenciadorDeEventos());
     }
 
     public void comer(int valor) {
@@ -23,7 +29,7 @@ public class Personagem {
         if (fome > 100) fome = 100;
     }
 
-    public void beber(int valor) {
+    public void sede(int valor) {
         sede += valor;
         if (sede > 100) sede = 100;
     }
@@ -33,13 +39,58 @@ public class Personagem {
         if (energia > 100) energia = 100;
     }
 
-    public void perderVida(int dano) {
-        vida -= dano;
-        if (vida < 0) vida = 0;
+    public void equiparArma(Arma arma) {
+        this.arma = arma;
+        System.out.println("Equiando arma " + arma.getNome());
+    }
+
+    public void atacar(Personagem alvo) {
+        if(this.arma != null) {
+            this.arma.atacar(alvo);
+        }
+
+    }
+
+    public void vida(int valor) {
+        vida += valor;
+        if (vida > 100) vida = 100;
+    }
+
+    public Localizador getLocalizador() { return this.localizador; }
+
+    public void mover(String nomeAmbiente) {
+        this.localizador.mudarAmbiente(nomeAmbiente);
+    }
+
+    public void mover(){
+        this.localizador.mudarAmbiente();
+    }
+
+    public String localizacao(){
+        String localizacao = this.localizador.getAmbienteAtual().getNome();
+        return localizacao;
+    }
+
+    public void usarItem(String nome) {
+        Item item = inventario.buscarItem(nome);
+        if (item != null) {
+            item.usar(this);
+        } else {
+            System.out.println("Item não foi encontrado.");
+        }
+
     }
 
     public Inventario getInventario() {
         return inventario;
+    }
+
+    public void adicionarItem(Item item) {
+        inventario.adicionarItem(item);
+        System.out.println("Item adicionado ao inventário: " + item.getNome());
+    }
+    public void removerItem(String nome) {
+        inventario.removerItem(nome);
     }
 
     // Getters e outros métodos
@@ -51,4 +102,5 @@ public class Personagem {
     public int getVida() {
         return vida;
     }
+
 }

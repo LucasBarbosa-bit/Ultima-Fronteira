@@ -1,5 +1,7 @@
 package jogo.itens;
 
+import jogo.personagens.Personagem;
+
 public abstract class Item {
     protected String nome;
     protected double peso;
@@ -25,8 +27,12 @@ public abstract class Item {
 
     public void reduzirDurabilidade(int valor) {
         durabilidade -= valor;
-        if (durabilidade < 0) durabilidade = 0;
+        if (durabilidade < 0) {
+            durabilidade = 0;
+            System.out.println("O item " + nome + " acabou.");
+        }
     }
 
-    public abstract void usar(); // polimórfico
+    public abstract void usar(Personagem jogador); // polimórfico
+
 }
