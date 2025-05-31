@@ -14,8 +14,6 @@ public class TestesAmbientes {
         jogador.adicionarItem(agua);
         System.out.println(jogador.getInventario().pesoAtual() + " kg de carga atual, de " +  jogador.getInventario().getPesoMaximo() + " kg de carga máxima." );
 
-        jogador.mover();
-
         System.out.println(jogador.localizacao());
 
         jogador.mover("Caverna");

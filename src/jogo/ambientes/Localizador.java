@@ -24,6 +24,9 @@ public class Localizador {
         this.historicoDeMovimentacao = new ArrayList<>();
         this.gerenciadorDeEventos = eventos;
 
+        Random random = new Random();
+        this.ambienteAtual = ambientesDisponiveis.get(random.nextInt(ambientesDisponiveis.size()));
+
 
     }
 
@@ -39,12 +42,6 @@ public class Localizador {
         System.out.println("Ambiente não encontrado.");
     }
 
-    public void mudarAmbiente() {
-        if (this.ambienteAtual == null) {
-            this.ambienteAtual = ambientesDisponiveis.getFirst();
-            return;
-        }
-    }
 
     public void gerarEventoAtual(Personagem jogador) {
         gerenciadorDeEventos.sortearEvento(jogador, ambienteAtual);
@@ -60,7 +57,6 @@ public class Localizador {
     }
 
     public void mostrarAmbientesDisponiveis() {
-        System.out.println("Ambientes disponíveis:");
         for (Ambiente ambiente : ambientesDisponiveis) {
             System.out.println("- " + ambiente.getNome());
         }

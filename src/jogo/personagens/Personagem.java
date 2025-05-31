@@ -62,28 +62,19 @@ public class Personagem {
         this.localizador.mudarAmbiente(nomeAmbiente);
     }
 
-    public void mover(){
-        this.localizador.mudarAmbiente();
-    }
 
     public String localizacao(){
-        String localizacao = this.localizador.getAmbienteAtual().getNome();
-        return localizacao;
+        return this.localizador.getAmbienteAtual().getNome();
     }
 
     public void usarItem(String nome) {
         Item item = inventario.buscarItem(nome);
-        if (item != null) {
-            item.usar(this);
-        } else {
-            System.out.println("Item não foi encontrado.");
-        }
+        if (item != null) item.usar(this);
+        else System.out.println("Item não foi encontrado.");
 
     }
 
-    public Inventario getInventario() {
-        return inventario;
-    }
+    public Inventario getInventario() { return inventario; }
 
     public void adicionarItem(Item item) {
         inventario.adicionarItem(item);
@@ -102,5 +93,10 @@ public class Personagem {
     public int getVida() {
         return vida;
     }
+
+    public int getFome() {return fome;}
+    public int getSede() {return sede;}
+    public int getEnergia() {return energia;}
+    public int getSanidade() {return sanidade;}
 
 }
