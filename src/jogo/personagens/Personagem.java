@@ -21,7 +21,7 @@ public class Personagem {
         this.energia = 100;
         this.sanidade = 100;
         this.inventario = new Inventario(20.0);// Exemplo de limite de peso
-        this.localizador = new Localizador(new GerenciadorDeEventos());
+        this.localizador = new Localizador(new GerenciadorDeEventos(this));
     }
 
     public void comer(int valor) {
@@ -29,15 +29,23 @@ public class Personagem {
         if (alimentacao > 100) alimentacao = 100;
     }
 
-    public void fomer(int valor) {
+    public void fome(int valor) {
         alimentacao -= valor;
         if (alimentacao < 0) alimentacao = 0;
+        if (alimentacao < 10) {
+            System.out.println("\nVocê está com muita fome\n.");
+            perderVida(10);
+        }
+        if (alimentacao > 100){
+            alimentacao = 100;
+        }
     }
 
     public void sede(int valor) {
-        System.out.println("Comando: " + valor);
+
         sede += valor;
         if (sede > 100) sede = 100;
+        if (sede < 0) sede = 0;
     }
 
     public void descansar() {
@@ -57,13 +65,14 @@ public class Personagem {
 
     }
     public void ganharvida(int valor) {
-        System.out.println("Vida perdida " + valor);
+        if (vida >= 100 ) return;
         vida += valor;
         if (vida > 100) vida = 100;
+        System.out.println("Vida ganha: " + valor);
     }
 
     public void perderVida(int valor){
-        System.out.println("Vida perdida " + valor);
+        System.out.println("Vida perdida: " + valor);
         vida -= valor;
         if (vida > 100) vida = 100;
         if (vida < 0) vida = 0;
@@ -80,6 +89,9 @@ public class Personagem {
         if (this.getEnergia() > 0){
             this.localizador.mudarAmbiente(nomeAmbiente);
             this.gastarEnergia(10);
+            sede(-2);
+            fome(2);
+            gerarEvento();
         }
     }
 
@@ -88,8 +100,19 @@ public class Personagem {
         return this.localizador.getAmbienteAtual().getNome();
     }
 
+    public boolean emLocalizacao(String nomeAmbiente) {
+        return this.localizador.getAmbienteAtual().getNome() != null && this.localizador.getAmbienteAtual().getNome().equalsIgnoreCase(nomeAmbiente);
+    }
+
+
+
     public void explorar(){
         this.localizador.getAmbienteAtual().explorar(this);
+        gerarEvento();
+    }
+
+    public void gerarEvento() {
+        this.localizador.gerarEventoAtual(this);
     }
 
     public void usarItem(String nome) {

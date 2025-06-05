@@ -11,13 +11,13 @@ public class Agua extends Item {
     }
 
     public void beber(Personagem jogador) {
-        System.out.println("Você bebeu " + nome + ". Pureza: " + pureza);
+        System.out.println("Você bebeu " + nome);
         reduzirDurabilidade(1);
         if (pureza) {
-            System.out.println("A sede foi saciada com sucesso.");
-            // implementar lógica da sede
+            System.out.println("A sede foi saciada em 20 pontos");
+
             jogador.sede(-20);
-            jogador.perderVida(1);
+            jogador.ganharvida(1);
         } else {
             System.out.println("Você bebeu " + nome + " e agora está contaminada.");
             jogador.perderVida(3);

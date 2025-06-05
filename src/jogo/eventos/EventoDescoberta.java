@@ -10,7 +10,7 @@ public class EventoDescoberta extends Evento {
     private boolean requerHabilidade;
 
     public EventoDescoberta(String nome, String descricao, double probabilidade, String impacto,
-                            String condicaoAtivacao, String tipoDescoberta, Item recursoEncontrado,
+                            Boolean condicaoAtivacao, String tipoDescoberta, Item recursoEncontrado,
                             boolean requerHabilidade) {
         super(nome, descricao, probabilidade, impacto, condicaoAtivacao);
         this.tipoDescoberta = tipoDescoberta;
@@ -20,7 +20,9 @@ public class EventoDescoberta extends Evento {
 
     @Override
     public void executar(Personagem jogador, Ambiente local) {
-        System.out.println("Descoberta: " + tipoDescoberta + ". Você encontrou " + recursoEncontrado.getNome());
-        jogador.getInventario().adicionarItem(recursoEncontrado);
+        if (condicaoAtivacao){
+            System.out.println("Descoberta: " + tipoDescoberta + ". Você encontrou " + recursoEncontrado.getNome());
+            jogador.getInventario().adicionarItem(recursoEncontrado);
+        }
     }
 }

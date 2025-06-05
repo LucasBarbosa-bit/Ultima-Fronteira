@@ -1,7 +1,7 @@
 package jogo.ambientes;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
+
 import jogo.itens.Item;
 import jogo.personagens.Personagem;
 
@@ -19,6 +19,68 @@ public abstract class Ambiente {
     }
 
     public abstract void explorar(Personagem jogador);
+
+    public void explorarComRecursos(Personagem jogador) {
+        System.out.println("Você começa a explorar o ambiente: " + nome + "...");
+        Random rand = new Random();
+
+        int quantidade = rand.nextInt(3) + 1;
+
+        if (recursosDisponiveis.isEmpty()) {
+            System.out.println("Nada foi encontrado aqui.");
+            return;
+        }
+
+        // Sorteio
+        Set<Item> encontrados = new HashSet<>();
+        for (int i = 0; i < quantidade && i < recursosDisponiveis.size(); i++) {
+            Item item = recursosDisponiveis.get(rand.nextInt(recursosDisponiveis.size()));
+            encontrados.add(item);
+        }
+
+        if (encontrados.isEmpty()) {
+            System.out.println("Nada foi encontrado desta vez.");
+            return;
+        }
+
+        System.out.println("🔍 Você encontrou:");
+        int i = 1;
+        List<Item> lista = new ArrayList<>(encontrados);
+        for (Item item : lista) {
+            System.out.println(i + ". " + item.getNome() + " (peso: " + item.getPeso() + ")");
+            i++;
+        }
+
+        // escolha dos itens a coletar
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Digite os números dos itens que deseja coletar (ex: 1 3), ou deixe em branco para nenhum:");
+        String resposta = scanner.nextLine();
+
+        if (resposta.isBlank()) {
+            System.out.println("Você decidiu não coletar nada.");
+            return;
+        }
+
+        String[] escolhas = resposta.trim().split(" ");
+        for (String s : escolhas) {
+            try {
+                int escolha = Integer.parseInt(s);
+                if (escolha > 0 && escolha <= lista.size()) {
+                    Item item = lista.get(escolha - 1);
+                    boolean sucesso = jogador.getInventario().adicionarItem(item);
+                    if (sucesso) {
+                        System.out.println("Você coletou: " + item.getNome());
+                    } else {
+                        System.out.println("Não foi possível coletar " + item.getNome() + " (peso excedido).");
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Número inválido: " + s);
+            }
+        }
+    }
+
+
     public abstract void gerarEvento();
     public abstract void modificarClima();
 

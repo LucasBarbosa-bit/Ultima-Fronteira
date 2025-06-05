@@ -25,6 +25,10 @@ public class AmbienteCaverna extends Ambiente {
             System.out.println("Explorando caverna... visibilidade baixa, use lanterna!");
             jogador.perderVida(-2);
             jogador.gastarEnergia(20);
+
+            explorarComRecursos(jogador);
+
+
         } // ferimento pequeno de exploração
     }
 

@@ -1,7 +1,6 @@
 package jogo.sistema;
 
-import jogo.itens.Agua;
-import jogo.itens.Item;
+import jogo.itens.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class Inventario {
                         aguaInventario.setPeso(pesoTotal);
                         aguaInventario.setDurabilidade(novaDurabilidade);
                     }
-                    if (!aguaNova.getPureza() &&  aguaNova.getDurabilidade() > aguaInventario.getDurabilidade() ){
+                    if (!aguaNova.getPureza() && (aguaNova.getDurabilidade() > aguaInventario.getDurabilidade())){
                         aguaNova.setPureza(false);
                     }
                     return true;
@@ -73,6 +72,19 @@ public class Inventario {
         System.out.println("\nPeso total: " + String.format("%.2f", pesoAtual()) + " / " + String.format("%.2f", pesoMaximo) + " kg");
         System.out.println("------------------\n");
     }
+
+    public Arma getMelhorArma() {
+        Arma melhor = null;
+        for (Item item : itens) {
+            if (item instanceof Arma arma) {
+                if (melhor == null || arma.getDano() > melhor.getDano()) {
+                    melhor = arma;
+                }
+            }
+        }
+        return melhor;
+    }
+
 
     public double getPesoMaximo() {
         return pesoMaximo;

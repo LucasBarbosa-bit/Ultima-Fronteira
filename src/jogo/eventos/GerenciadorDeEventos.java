@@ -10,10 +10,12 @@ import java.util.Random;
 public class GerenciadorDeEventos {
     private List<Evento> eventosPossiveis;
     private Random random;
+    private Personagem jogador;
 
-    public GerenciadorDeEventos() {
+    public GerenciadorDeEventos(Personagem joagdor) {
         this.eventosPossiveis = new ArrayList<>();
         this.random = new Random();
+        this.jogador = joagdor;
     }
 
     public void adicionarEvento(Evento evento) {
@@ -23,10 +25,14 @@ public class GerenciadorDeEventos {
     public void sortearEvento(Personagem jogador, Ambiente ambiente) {
         for (Evento evento : eventosPossiveis) {
             if (random.nextDouble() <= evento.probabilidade) {
-                System.out.println("Evento sorteado: " + evento.getNome());
-                evento.executar(jogador, ambiente);
-                break;
+                if (evento.condicaoAtivacao){
+                    System.out.println("\nEvento sorteado!!!");
+                    evento.executar(jogador, ambiente);
+                    break;
+                }
             }
         }
     }
+
+    public Personagem getJogador() { return jogador; }
 }

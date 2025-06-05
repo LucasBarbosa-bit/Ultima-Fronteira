@@ -22,6 +22,9 @@ public class AmbienteLagoRio extends Ambiente {
         if (jogador.getEnergia() > 0) {
             System.out.println("Explorando margem do rio... cuidado com o terreno lamacento.");
             jogador.descansar();
+
+            explorarComRecursos(jogador);
+
         }
     }
 

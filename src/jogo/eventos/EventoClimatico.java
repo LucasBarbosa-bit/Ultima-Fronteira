@@ -8,7 +8,7 @@ public class EventoClimatico extends Evento {
     private int duracao;
 
     public EventoClimatico(String nome, String descricao, double probabilidade, String impacto,
-                           String condicaoAtivacao, String tipoClima, int duracao) {
+                           Boolean condicaoAtivacao, String tipoClima, int duracao) {
         super(nome, descricao, probabilidade, impacto, condicaoAtivacao);
         this.tipoClima = tipoClima;
         this.duracao = duracao;
@@ -16,8 +16,8 @@ public class EventoClimatico extends Evento {
 
     @Override
     public void executar(Personagem jogador, Ambiente local) {
-        System.out.println("Evento Climático: " + tipoClima + " afeta o ambiente!");
-
-        jogador.descansar();
+        if (condicaoAtivacao){
+            System.out.println("Evento Climático: " + tipoClima + " afeta o ambiente!");
+        }
     }
 }

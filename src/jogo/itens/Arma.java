@@ -20,6 +20,8 @@ public class Arma extends Item {
         alvo.perderVida(dano);
     }
 
+    public int getDano() { return dano; }
+
     @Override
     public void usar(Personagem jogador) {
         System.out.println("O personagem " + jogador.getNome() + " equipa " + super.nome);

@@ -23,6 +23,8 @@ public class AmbienteMontanha extends Ambiente {
             System.out.println("Explorando montanha... gasto alto de energia!");
             jogador.perderVida(5);
             jogador.gastarEnergia(20);
+
+            explorarComRecursos(jogador);
         }
     }
 

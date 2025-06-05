@@ -23,7 +23,6 @@ public class AmbienteRuinas extends Ambiente {
         super.recursosDisponiveis.add(new Ferramenta("Machado", 2.0, 100, "Machado", 50));
         super.recursosDisponiveis.add(new Ferramenta("Isqueiro", 0.1, 100, "Isqueiro", 100));
         super.recursosDisponiveis.add(new Ferramenta("Escudo", 0.1, 100, "Escudo", 100));
-        super.recursosDisponiveis.add(new Ferramenta("Lanterna", 0.2, 100, "Equipamento Elétrico", 50));
 
         super.recursosDisponiveis.add(new Arma("Espada", 1.0, 100, "Lamina", 10,10));
         super.recursosDisponiveis.add(new Arma("Machado de Batalha", 2.0, 100, "Lamina", 15, 8));
@@ -36,6 +35,8 @@ public class AmbienteRuinas extends Ambiente {
             System.out.println("Explorando as ruínas... riscos de desabamento.");
             jogador.perderVida(2);
             jogador.gastarEnergia(10);
+
+            explorarComRecursos(jogador);
         }
 
         // mais da lógica de exploração nesse ambiente

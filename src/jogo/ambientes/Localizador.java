@@ -9,7 +9,6 @@ public class Localizador {
     private List<Ambiente> ambientesDisponiveis;
     private List<String> historicoDeMovimentacao;
     private Ambiente ambienteAtual;
-
     private GerenciadorDeEventos gerenciadorDeEventos;
 
     public Localizador(GerenciadorDeEventos eventos) {
@@ -69,5 +68,9 @@ public class Localizador {
         for (String nome : historicoDeMovimentacao) {
             System.out.println("→ " + nome);
         }
+    }
+
+    public GerenciadorDeEventos getGerenciadorDeEventos() {
+        return gerenciadorDeEventos;
     }
 }
