@@ -32,8 +32,11 @@ public class AmbienteRuinas extends Ambiente {
 
     @Override
     public void explorar(Personagem jogador) {
-        System.out.println("Explorando as ruínas... riscos de desabamento.");
-        jogador.vida(-3);
+        if(jogador.getEnergia() > 10){
+            System.out.println("Explorando as ruínas... riscos de desabamento.");
+            jogador.perderVida(2);
+            jogador.gastarEnergia(10);
+        }
 
         // mais da lógica de exploração nesse ambiente
     }

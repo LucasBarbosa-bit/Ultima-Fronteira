@@ -1,13 +1,8 @@
 package jogo;
 
-import jogo.ambientes.*;
-import jogo.eventos.GerenciadorDeEventos;
-import jogo.itens.Agua;
-import jogo.itens.Item;
+import jogo.itens.Alimento;
 import jogo.personagens.Personagem;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -29,8 +24,7 @@ public class Main {
         System.out.println();
 
         System.out.println("Suas condições de vida são: " + jogador.getVida() + " /100");
-        System.out.println("O peso de seu inventário é: " + jogador.getInventario().pesoAtual() + " kg de 20kg máximos.");
-        System.out.println("Suas Condicoes de fome: " + jogador.getFome() + " /100");
+        System.out.println("Suas Condicoes de fome: " + jogador.getAlimentacao() + " /100");
         System.out.println("Suas Condicoes de sede: " + jogador.getSede() + " /100");
         System.out.println();
 
@@ -48,11 +42,65 @@ public class Main {
 
         System.out.println();
         System.out.println("Você pode escolher qual ambiente você quer ir.");
-        System.out.print("Digite o nome do ambiente: ");
-        String nomeAmbiente = scanner.nextLine();
-        scanner.close();
+        System.out.print("Digite o nº do ambiente que você deseja ir: ");
+        int nomeAmbiente1 = scanner.nextInt();
+        scanner.nextLine();
 
-        jogador.mover(nomeAmbiente);
+        switch (nomeAmbiente1) {
+            case 1: jogador.mover("Ruínas"); break;
+            case 2: jogador.mover("Floresta"); break;
+            case 3: jogador.mover("Caverna"); break;
+            case 4: jogador.mover("Montanha"); break;
+            case 5: jogador.mover("Lago e Rio"); break;
+            default: System.out.println("Opção inválida!");
+        }
+
+       while (jogador.getVida() > 0 && jogador.getAlimentacao() > 0 && jogador.getSede() > 0) {
+           System.out.println("\nVida: " + jogador.getVida() + " | Alimentação: " + jogador.getAlimentacao() +
+                   " | Sede: " + jogador.getSede() + " | Energia: " + jogador.getEnergia());
+
+           System.out.println("\n📋 Escolha sua ação:");
+           System.out.println("1. Explorar ambiente e ver oque é possivel encontrar");
+           System.out.println("2. Usar item que você deseja");
+           System.out.println("3. Ir para um outro lugar");
+           System.out.println("4. Ver inventário");
+           System.out.println("5. Ver histórico de ambientes");
+           System.out.println("0. Sair do jogo");
+
+           System.out.print(" --> Sua opção : ");
+
+           int opcao = scanner.nextInt();
+           scanner.nextLine();
+
+           switch (opcao) {
+               case 1: jogador.explorar(); break;
+               case 2:
+                   System.out.print("Digite o nome do item a usar: ");
+                   String nomeItem = scanner.nextLine();
+                   jogador.usarItem(nomeItem);
+                   break;
+               case 3:
+                   System.out.println("\nVocê está em: " + jogador.localizacao());
+                   System.out.println();
+                   jogador.getLocalizador().mostrarAmbientesDisponiveis();
+                   System.out.println("Você pode escolher qual ambiente você quer ir.");
+                   System.out.print("Digite o nº do ambiente que você deseja ir: ");
+                   int nomeAmbiente = scanner.nextInt();
+                   scanner.nextLine();
+                   switch (nomeAmbiente1) {
+                       case 1: jogador.mover("Ruínas"); break;
+                       case 2: jogador.mover("Floresta"); break;
+                       case 3: jogador.mover("Caverna"); break;
+                       case 4: jogador.mover("Montanha"); break;
+                       case 5: jogador.mover("Lago e Rio"); break;
+                       default: System.out.println("Opção inválida!");
+                   }
+
+               case 4: jogador.mostrarInventario(); break;
+               case 5: jogador.getLocalizador().mostrarHistorico(); break;
+               case 0: System.exit(0);
+           }
+       }
 
 
     }

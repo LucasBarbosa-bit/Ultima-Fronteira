@@ -8,7 +8,7 @@ import jogo.sistema.Inventario;
 
 public class Personagem {
     private String nome;
-    private int vida, fome, sede, energia, sanidade;
+    private int vida, alimentacao, sede, energia, sanidade;
     private Inventario inventario;
     private Arma arma;
     private Localizador localizador;
@@ -16,7 +16,7 @@ public class Personagem {
     public Personagem(String nome) {
         this.nome = nome;
         this.vida = 100;
-        this.fome = 100;
+        this.alimentacao = 100;
         this.sede = 100;
         this.energia = 100;
         this.sanidade = 100;
@@ -25,11 +25,17 @@ public class Personagem {
     }
 
     public void comer(int valor) {
-        fome += valor;
-        if (fome > 100) fome = 100;
+        alimentacao += valor;
+        if (alimentacao > 100) alimentacao = 100;
+    }
+
+    public void fomer(int valor) {
+        alimentacao -= valor;
+        if (alimentacao < 0) alimentacao = 0;
     }
 
     public void sede(int valor) {
+        System.out.println("Comando: " + valor);
         sede += valor;
         if (sede > 100) sede = 100;
     }
@@ -50,21 +56,40 @@ public class Personagem {
         }
 
     }
-
-    public void vida(int valor) {
+    public void ganharvida(int valor) {
+        System.out.println("Vida perdida " + valor);
         vida += valor;
         if (vida > 100) vida = 100;
     }
 
+    public void perderVida(int valor){
+        System.out.println("Vida perdida " + valor);
+        vida -= valor;
+        if (vida > 100) vida = 100;
+        if (vida < 0) vida = 0;
+        if (vida == 0){
+            // jogador.gameOver()
+        }
+    }
+
     public Localizador getLocalizador() { return this.localizador; }
 
+    public void mostrarInventario() { inventario.listarItens(); }
+
     public void mover(String nomeAmbiente) {
-        this.localizador.mudarAmbiente(nomeAmbiente);
+        if (this.getEnergia() > 0){
+            this.localizador.mudarAmbiente(nomeAmbiente);
+            this.gastarEnergia(10);
+        }
     }
 
 
     public String localizacao(){
         return this.localizador.getAmbienteAtual().getNome();
+    }
+
+    public void explorar(){
+        this.localizador.getAmbienteAtual().explorar(this);
     }
 
     public void usarItem(String nome) {
@@ -84,6 +109,11 @@ public class Personagem {
         inventario.removerItem(nome);
     }
 
+    public void gastarEnergia(int valor) {
+        energia -= valor;
+        if (energia < 0) energia = 0;
+    }
+
     // Getters e outros métodos
 
     public String getNome() {
@@ -94,7 +124,7 @@ public class Personagem {
         return vida;
     }
 
-    public int getFome() {return fome;}
+    public int getAlimentacao() {return alimentacao;}
     public int getSede() {return sede;}
     public int getEnergia() {return energia;}
     public int getSanidade() {return sanidade;}

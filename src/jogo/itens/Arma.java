@@ -14,11 +14,10 @@ public class Arma extends Item {
         this.alcance = alcance;
     }
 
-
     public void atacar(Personagem alvo) {
         System.out.println("Atacando " + alvo.getNome() + " com " + nome + ", causando " + dano + " de dano.");
         reduzirDurabilidade(3);
-        alvo.vida(-dano);
+        alvo.perderVida(dano);
     }
 
     @Override

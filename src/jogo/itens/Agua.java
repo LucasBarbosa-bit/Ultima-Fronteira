@@ -17,12 +17,21 @@ public class Agua extends Item {
             System.out.println("A sede foi saciada com sucesso.");
             // implementar lógica da sede
             jogador.sede(-20);
-            jogador.vida(2);
+            jogador.perderVida(1);
         } else {
             System.out.println("Você bebeu " + nome + " e agora está contaminada.");
-            jogador.vida(-5);
+            jogador.perderVida(3);
         }
     }
+
+    public void addDurabilidade(int durabilidade ) {
+        this.durabilidade += durabilidade;
+    }
+
+    public int getDurabilidade() { return this.durabilidade; }
+    public void setDurabilidade(int durabilidade) { this.durabilidade = durabilidade; }
+    public boolean getPureza() { return this.pureza; }
+    public void setPureza(boolean pureza) { this.pureza = pureza; }
 
     @Override
     public void usar(Personagem jogador) {

@@ -18,8 +18,11 @@ public class AmbienteLagoRio extends Ambiente {
 
     @Override
     public void explorar(Personagem jogador) {
-        System.out.println("Explorando margem do rio... cuidado com o terreno lamacento.");
-        jogador.descansar();
+
+        if (jogador.getEnergia() > 0) {
+            System.out.println("Explorando margem do rio... cuidado com o terreno lamacento.");
+            jogador.descansar();
+        }
     }
 
     @Override

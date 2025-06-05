@@ -25,6 +25,10 @@ public abstract class Item {
         return durabilidade;
     }
 
+    public void setDurabilidade(int durabilidade) { this.durabilidade = durabilidade; }
+    public void addDurabilidade(int durabilidade) { this.durabilidade += durabilidade; }
+    public void setPeso(double peso) {this.peso = peso;}
+
     public void reduzirDurabilidade(int valor) {
         durabilidade -= valor;
         if (durabilidade < 0) {

@@ -57,8 +57,10 @@ public class Localizador {
     }
 
     public void mostrarAmbientesDisponiveis() {
+        int i = 1;
         for (Ambiente ambiente : ambientesDisponiveis) {
-            System.out.println("- " + ambiente.getNome());
+            System.out.println(i + ".  " + ambiente.getNome());
+            i++;
         }
     }
 

@@ -21,8 +21,9 @@ public class AmbienteFloresta extends Ambiente {
 
     @Override
     public void explorar(Personagem jogador) {
-        System.out.println("Explorando a floresta... gasta energia extra devido à vegetação densa.");
-        jogador.descansar(); // só como exemplo: pode ser mudar energia, encontrar item etc.
+        if (jogador.getEnergia() > 10){
+            System.out.println("Explorando a floresta... gasta energia extra devido à vegetação densa.");
+            jogador.gastarEnergia(10);}
     }
 
     @Override

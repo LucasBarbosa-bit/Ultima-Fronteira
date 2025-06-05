@@ -21,8 +21,11 @@ public class AmbienteCaverna extends Ambiente {
 
     @Override
     public void explorar(Personagem jogador) {
-        System.out.println("Explorando caverna... visibilidade baixa, use lanterna!");
-        jogador.vida(-2); // ferimento pequeno de exploração
+        if (jogador.getEnergia()> 20){
+            System.out.println("Explorando caverna... visibilidade baixa, use lanterna!");
+            jogador.perderVida(-2);
+            jogador.gastarEnergia(20);
+        } // ferimento pequeno de exploração
     }
 
     @Override

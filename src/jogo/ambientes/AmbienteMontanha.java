@@ -19,8 +19,11 @@ public class AmbienteMontanha extends Ambiente {
 
     @Override
     public void explorar(Personagem jogador) {
-        System.out.println("Explorando montanha... gasto alto de energia!");
-        jogador.vida(-5); // exemplo: esforço causa desgaste
+        if(jogador.getEnergia() > 20){
+            System.out.println("Explorando montanha... gasto alto de energia!");
+            jogador.perderVida(5);
+            jogador.gastarEnergia(20);
+        }
     }
 
     @Override

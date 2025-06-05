@@ -3,7 +3,7 @@ package jogo.itens;
 import jogo.personagens.Personagem;
 
 public class Ferramenta extends Item {
-    private String tipo; // ex: "machado", "isqueiro"
+    private String tipo;
     private int eficiencia;
 
     public Ferramenta(String nome, double peso, int durabilidade, String tipo, int eficiencia) {
@@ -16,7 +16,5 @@ public class Ferramenta extends Item {
     public void usar(Personagem personagem) {
         System.out.println("Usando ferramenta: " + tipo + ". Eficiência: " + eficiencia);
         reduzirDurabilidade(2);
-
-
     }
 }
