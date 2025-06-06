@@ -10,6 +10,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -34,7 +35,7 @@ public class Main {
             try {
                 classeEscolhida = scanner.nextInt();
             } catch (InputMismatchException e) {
-                // Apenas ignora, o loop tratará a entrada inválida
+                // Apenas ignora
             } finally {
                 scanner.nextLine();
             }
@@ -102,26 +103,13 @@ public class Main {
                     turnoPassou = true;
                     break;
                 case 2: // Mover
-                    System.out.println("\nVocê está em: " + jogador.localizacao());
-                    System.out.println();
-                    jogador.getLocalizador().mostrarAmbientesDisponiveis();
-                    System.out.println("Para qual ambiente você deseja ir?");
-                    System.out.print("Digite o nº do ambiente: ");
-                    int numAmbiente = scanner.nextInt();
-                    scanner.nextLine();
-                    switch (numAmbiente) {
-                        case 1: jogador.mover("Ruínas"); break;
-                        case 2: jogador.mover("Floresta"); break;
-                        case 3: jogador.mover("Caverna"); break;
-                        case 4: jogador.mover("Montanha"); break;
-                        case 5: jogador.mover("Lago/Rio"); break;
-                        default: System.out.println("Opção inválida!");
-                    }
-                    turnoPassou = true;
+                    boolean moveu = selecionarDestino(jogador, scanner);
+                    turnoPassou = moveu;
                     break;
                 case 3: // Criar Itens
-                    boolean criouItem = jogador.criarItem();
-                    turnoPassou = criouItem;
+                    // Adicionar lógica para verificar se a criação foi bem-sucedida antes de passar o turno
+                    jogador.criarItem();
+                    turnoPassou = true;
                     break;
                 case 4: // Descansar
                     boolean descansou = jogador.tentarDescansar();
@@ -178,6 +166,40 @@ public class Main {
                 System.out.println("A desidratação foi implacável.");
             } else if (jogador.getSanidade() <= 0) {
                 System.out.println("Sua mente cedeu aos horrores da ilha.");
+            }
+        }
+    }
+
+    private static boolean selecionarDestino(Personagem jogador, Scanner scanner) {
+        while (true) {
+            System.out.println("\nVocê está em: " + jogador.localizacao());
+            System.out.println();
+            jogador.getLocalizador().mostrarAmbientesDisponiveis();
+            System.out.println("Para qual ambiente você deseja ir? (Digite 0 para cancelar)");
+            System.out.print("Digite o nº do ambiente: ");
+
+            int numAmbiente = -1;
+            try {
+                numAmbiente = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida! Por favor, digite um número.");
+            } finally {
+                scanner.nextLine();
+            }
+
+            if (numAmbiente == 0) {
+                System.out.println("Movimento cancelado.");
+                return false; // Retorna false para não passar o turno
+            }
+
+            switch (numAmbiente) {
+                case 1: jogador.mover("Ruínas"); return true;
+                case 2: jogador.mover("Floresta"); return true;
+                case 3: jogador.mover("Caverna"); return true;
+                case 4: jogador.mover("Montanha"); return true;
+                case 5: jogador.mover("Lago/Rio"); return true;
+                default:
+                    System.out.println("Opção inválida! Tente novamente.");
             }
         }
     }
