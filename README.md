@@ -36,7 +36,7 @@ O projeto foi desenvolvido em Java e não requer dependências externas. Para co
     Abra o terminal na pasta raiz do projeto (`Ultima-Fronteira/`) e execute o seguinte comando. Ele irá compilar todos os arquivos `.java` dentro da pasta `src` e colocar os `.class` na pasta `bin` (que será criada se não existir).
 
     ```sh
-    javac -d bin src/jogo/Main.java
+    javac -d bin -sourcepath src src/jogo/Main.java
     ```
 
     *(O compilador `javac` irá automaticamente encontrar e compilar todas as classes dependentes).*
