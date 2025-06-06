@@ -43,7 +43,7 @@ public abstract class Ambiente {
             return;
         }
 
-        System.out.println("🔍 Você encontrou:");
+        System.out.println("Você encontrou:");
         int i = 1;
         List<Item> lista = new ArrayList<>(encontrados);
         for (Item item : lista) {

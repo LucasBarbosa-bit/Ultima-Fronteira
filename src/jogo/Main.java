@@ -70,7 +70,7 @@ public class Main {
             System.out.println("Vida: " + jogador.getVida() + " | Fome: " + jogador.getAlimentacao() +
                     " | Sede: " + jogador.getSede() + " | Energia: " + jogador.getEnergia() + " | Sanidade: " + jogador.getSanidade());
 
-            System.out.println("\n📋 Escolha sua ação:");
+            System.out.println("\n Escolha sua ação:");
             System.out.println("1. Explorar ambiente");
             System.out.println("2. Usar item");
             System.out.println("3. Mover para outro ambiente");
