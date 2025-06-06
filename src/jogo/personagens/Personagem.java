@@ -181,8 +181,8 @@ public abstract class Personagem {
         }
     }
 
-    public void criarItem() {
-        artesanato.mostrarInterfaceDeCriacao(this);
+    public boolean criarItem() {
+        return artesanato.mostrarInterfaceDeCriacao(this);
     }
 
     public Localizador getLocalizador() { return this.localizador; }

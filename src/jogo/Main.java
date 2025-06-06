@@ -120,8 +120,8 @@ public class Main {
                     turnoPassou = true;
                     break;
                 case 3: // Criar Itens
-                    jogador.criarItem();
-                    turnoPassou = true;
+                    boolean criouItem = jogador.criarItem();
+                    turnoPassou = criouItem;
                     break;
                 case 4: // Descansar
                     boolean descansou = jogador.tentarDescansar();

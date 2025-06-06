@@ -37,7 +37,7 @@ public class Artesanato {
         receitasMecanico.add(new Receita(ingEscudo, new Ferramenta("Escudo de Madeira", 3.0, 100, "Escudo", 100)));
     }
 
-    public void mostrarInterfaceDeCriacao(Personagem jogador) {
+    public boolean mostrarInterfaceDeCriacao(Personagem jogador) {
         System.out.println("\n--- Criação de Itens ---");
         List<Receita> receitasPossiveis = new ArrayList<>();
 
@@ -57,7 +57,7 @@ public class Artesanato {
 
         if (receitasPossiveis.isEmpty()) {
             System.out.println("Você não tem materiais suficientes para criar nada no momento.");
-            return;
+            return false;
         }
 
         System.out.println("Você pode criar os seguintes itens:");
@@ -73,7 +73,9 @@ public class Artesanato {
 
         if (escolha > 0 && escolha <= receitasPossiveis.size()) {
             criarItem(receitasPossiveis.get(escolha - 1), jogador);
+            return true;
         }
+        return false;
     }
 
     private boolean podeCriar(Receita receita, Inventario inventario) {
