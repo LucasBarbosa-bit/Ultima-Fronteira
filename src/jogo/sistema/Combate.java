@@ -10,9 +10,11 @@ public class Combate {
     public static void iniciar(Personagem jogador, Criatura inimigo) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nUm " + inimigo.getNome() + " apareceu! Prepare-se para lutar!");
+        jogador.perderSanidade(3); // Sanidade perdida pela tensão do combate
 
         while (inimigo.estaViva() && jogador.getVida() > 0) {
             System.out.println("\n--- TURNO DO JOGADOR ---");
+            System.out.println("Vida: " + jogador.getVida() + " | Inimigo: " + inimigo.getVida());
             System.out.println("1. Atacar com arma");
             System.out.println("2. Fugir");
 
@@ -31,7 +33,7 @@ public class Combate {
                     arma.reduzirDurabilidade(1);
                 }
             } else if (escolha == 2) {
-                System.out.println("Você foge do combate. O inimigo te atinge nas costas!");
+                System.out.println("Você tenta fugir, mas o inimigo te atinge pelas costas!");
                 inimigo.atacar(jogador);
                 jogador.gastarEnergia(20);
                 break;
@@ -40,15 +42,15 @@ public class Combate {
             if (inimigo.estaViva()) {
                 System.out.println("\n--- TURNO DO INIMIGO ---");
                 inimigo.atacar(jogador);
+                jogador.perderSanidade(2); // Perder sanidade ao ser ferido
             } else {
                 System.out.println("Você derrotou o " + inimigo.getNome() + "!");
-                jogador.descansar();
+                jogador.descansar(); // Recupera um pouco de energia e sanidade
             }
         }
 
         if (jogador.getVida() <= 0) {
             System.out.println("Você foi derrotado em combate.");
-            System.out.println("\n GAME OVER \n");
         }
     }
 }

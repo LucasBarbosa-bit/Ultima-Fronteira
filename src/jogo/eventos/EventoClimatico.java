@@ -3,21 +3,17 @@ package jogo.eventos;
 import jogo.personagens.Personagem;
 import jogo.ambientes.Ambiente;
 
-public class EventoClimatico extends Evento {
+public abstract class EventoClimatico extends Evento {
     private String tipoClima;
     private int duracao;
 
     public EventoClimatico(String nome, String descricao, double probabilidade, String impacto,
-                           Boolean condicaoAtivacao, String tipoClima, int duracao) {
-        super(nome, descricao, probabilidade, impacto, condicaoAtivacao);
+                           String localizacaoRequerida, String tipoClima, int duracao) {
+        super(nome, descricao, probabilidade, impacto, localizacaoRequerida);
         this.tipoClima = tipoClima;
         this.duracao = duracao;
     }
 
     @Override
-    public void executar(Personagem jogador, Ambiente local) {
-        if (condicaoAtivacao){
-            System.out.println("Evento Climático: " + tipoClima + " afeta o ambiente!");
-        }
-    }
+    public abstract void executar(Personagem jogador, Ambiente local);
 }

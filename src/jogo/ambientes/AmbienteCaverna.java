@@ -1,7 +1,5 @@
 package jogo.ambientes;
 
-import java.util.ArrayList;
-import java.util.List;
 import jogo.itens.*;
 import jogo.personagens.Personagem;
 
@@ -21,15 +19,15 @@ public class AmbienteCaverna extends Ambiente {
 
     @Override
     public void explorar(Personagem jogador) {
-        if (jogador.getEnergia()> 20){
-            System.out.println("Explorando caverna... visibilidade baixa, use lanterna!");
-            jogador.perderVida(-2);
+        if (jogador.getEnergia() > 20){
+            System.out.println("Explorando caverna... visibilidade baixa, a escuridão é sufocante.");
+            jogador.perderSanidade(5); // Custo de sanidade por estar na escuridão
             jogador.gastarEnergia(20);
 
             explorarComRecursos(jogador);
-
-
-        } // ferimento pequeno de exploração
+        } else {
+            System.out.println("Você está exausto demais para se aventurar na escuridão.");
+        }
     }
 
     @Override
@@ -41,7 +39,4 @@ public class AmbienteCaverna extends Ambiente {
     public void modificarClima() {
         System.out.println("Correntes de ar mudam dentro da caverna.");
     }
-
-
 }
-

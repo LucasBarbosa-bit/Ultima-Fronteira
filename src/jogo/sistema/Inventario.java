@@ -4,6 +4,7 @@ import jogo.itens.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Inventario {
     private List<Item> itens;
@@ -15,31 +16,37 @@ public class Inventario {
     }
 
     public boolean adicionarItem(Item item) {
+        if (pesoAtual() + item.getPeso() > pesoMaximo) {
+            return false; // Falha se o peso exceder o máximo
+        }
+
         if (item instanceof Agua) {
             Agua aguaNova = (Agua) item;
-            for (Item item1 : itens){
-                if (item instanceof Agua){
-                    Agua aguaInventario = (Agua) item1;
-                    double pesoAdicional = aguaNova.getPeso();
+            Optional<Item> aguaExistenteOpt = itens.stream()
+                    .filter(i -> i instanceof Agua)
+                    .findFirst();
 
-                    if (pesoAtual() + pesoAdicional  < pesoMaximo){
-                        double pesoTotal = aguaInventario.getPeso() + aguaNova.getPeso();
-                        int novaDurabilidade = aguaInventario.getDurabilidade() + aguaNova.getDurabilidade();
-                        aguaInventario.setPeso(pesoTotal);
-                        aguaInventario.setDurabilidade(novaDurabilidade);
-                    }
-                    if (!aguaNova.getPureza() && (aguaNova.getDurabilidade() > aguaInventario.getDurabilidade())){
-                        aguaNova.setPureza(false);
-                    }
-                    return true;
+            if (aguaExistenteOpt.isPresent()) {
+                Agua aguaInventario = (Agua) aguaExistenteOpt.get();
+
+                // Combina a água
+                double pesoTotal = aguaInventario.getPeso() + aguaNova.getPeso();
+                int novaDurabilidade = aguaInventario.getDurabilidade() + aguaNova.getDurabilidade();
+
+                aguaInventario.setPeso(pesoTotal);
+                aguaInventario.setDurabilidade(novaDurabilidade);
+
+                // Se a água nova for impura, contamina toda a pilha
+                if (!aguaNova.getPureza()) {
+                    aguaInventario.setPureza(false);
                 }
+                return true;
             }
         }
-        if (pesoAtual() + item.getPeso() <= pesoMaximo) {
-            itens.add(item);
-            return true;
-        }
-        return false;
+
+        // Para outros itens ou se não houver água existente, adiciona normalmente
+        itens.add(item);
+        return true;
     }
 
     public boolean removerItem(String nome) {
@@ -65,9 +72,14 @@ public class Inventario {
             System.out.println("Inventário vazio.");
             return;
         }
-        System.out.println("\n--- Inventário ---\n");
+        System.out.println("\n--- Inventário ---");
         for (Item item : itens) {
-            System.out.println("- " + item.getNome() + " (Peso: " + item.getPeso() + ", Durabilidade: " + item.getDurabilidade() + ")");
+            String detalhes = "- " + item.getNome() + " (Peso: " + String.format("%.2f", item.getPeso()) + ", Durabilidade: " + item.getDurabilidade();
+            if (item instanceof Agua) {
+                detalhes += ", Pureza: " + (((Agua) item).getPureza() ? "Potável" : "Contaminada");
+            }
+            detalhes += ")";
+            System.out.println(detalhes);
         }
         System.out.println("\nPeso total: " + String.format("%.2f", pesoAtual()) + " / " + String.format("%.2f", pesoMaximo) + " kg");
         System.out.println("------------------\n");
@@ -76,7 +88,8 @@ public class Inventario {
     public Arma getMelhorArma() {
         Arma melhor = null;
         for (Item item : itens) {
-            if (item instanceof Arma arma) {
+            if (item instanceof Arma) {
+                Arma arma = (Arma) item;
                 if (melhor == null || arma.getDano() > melhor.getDano()) {
                     melhor = arma;
                 }

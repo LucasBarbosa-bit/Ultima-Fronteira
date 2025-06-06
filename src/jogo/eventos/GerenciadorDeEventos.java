@@ -12,10 +12,10 @@ public class GerenciadorDeEventos {
     private Random random;
     private Personagem jogador;
 
-    public GerenciadorDeEventos(Personagem joagdor) {
+    public GerenciadorDeEventos(Personagem jogador) {
         this.eventosPossiveis = new ArrayList<>();
         this.random = new Random();
-        this.jogador = joagdor;
+        this.jogador = jogador;
     }
 
     public void adicionarEvento(Evento evento) {
@@ -24,10 +24,13 @@ public class GerenciadorDeEventos {
 
     public void sortearEvento(Personagem jogador, Ambiente ambiente) {
         for (Evento evento : eventosPossiveis) {
-            if (random.nextDouble() <= evento.probabilidade) {
-                if (evento.condicaoAtivacao){
-                    System.out.println("\nEvento sorteado!!!");
+            // Primeiro, verifica se o evento é compatível com o ambiente atual
+            if (evento.podeOcorrer(ambiente)) {
+                // Se for compatível, então verifica a probabilidade
+                if (random.nextDouble() <= evento.getProbabilidade()) {
+                    System.out.println("\nEvento sorteado: " + evento.getNome());
                     evento.executar(jogador, ambiente);
+                    // Interrompe após o primeiro evento para não sobrecarregar o jogador
                     break;
                 }
             }

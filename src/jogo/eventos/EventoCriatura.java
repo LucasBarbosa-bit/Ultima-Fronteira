@@ -10,20 +10,20 @@ public class EventoCriatura extends Evento {
     private int nivelPerigo;
 
     public EventoCriatura(String nome, String descricao, double probabilidade, String impacto,
-                          Boolean condicaoAtivacao, String tipoCriatura, int nivelPerigo) {
-        super(nome, descricao, probabilidade, impacto, condicaoAtivacao);
+                          String localizacaoRequerida, String tipoCriatura, int nivelPerigo) {
+        super(nome, descricao, probabilidade, impacto, localizacaoRequerida);
         this.tipoCriatura = tipoCriatura;
         this.nivelPerigo = nivelPerigo;
     }
 
     @Override
     public void executar(Personagem jogador, Ambiente ambiente) {
-        if (condicaoAtivacao){
-            System.out.println("Evento: Criatura hostil surge!");
+        System.out.println("Evento: Criatura hostil surge!");
+        System.out.println(super.descricao);
 
-            Criatura criatura = new Criatura("Lobo Selvagem", 20, 5);
-            Combate.iniciar(jogador, criatura);
-        }
+        jogador.perderSanidade(10); // Perda de sanidade pelo susto
+
+        Criatura criatura = new Criatura(this.tipoCriatura, 20, this.nivelPerigo);
+        Combate.iniciar(jogador, criatura);
     }
-
 }

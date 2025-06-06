@@ -10,9 +10,9 @@ public class EventoDoencaFerimento extends Evento {
     private boolean curaNecessaria;
 
     public EventoDoencaFerimento(String nome, String descricao, double probabilidade, String impacto,
-                                 Boolean condicaoAtivacao, String tipoCondicao, int impactoVida,
+                                 String localizacaoRequerida, String tipoCondicao, int impactoVida,
                                  int impactoEnergia, boolean curaNecessaria) {
-        super(nome, descricao, probabilidade, impacto, condicaoAtivacao);
+        super(nome, descricao, probabilidade, impacto, localizacaoRequerida);
         this.tipoCondicao = tipoCondicao;
         this.impactoVida = impactoVida;
         this.impactoEnergia = impactoEnergia;
@@ -22,8 +22,8 @@ public class EventoDoencaFerimento extends Evento {
     @Override
     public void executar(Personagem jogador, Ambiente local) {
         System.out.println("Evento de saúde: " + nome);
-        jogador.perderVida(-impactoVida);
+        System.out.println(super.descricao);
+        jogador.perderVida(impactoVida);
         jogador.gastarEnergia(impactoEnergia);
-        jogador.descansar(); // poderia ser uma penalização real
     }
 }
