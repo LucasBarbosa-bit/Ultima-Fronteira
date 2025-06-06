@@ -1,4 +1,4 @@
--# Jogo de Sobrevivência: Última Fronteira
+# Jogo de Sobrevivência: Última Fronteira
 
 ## Descrição do Projeto
 
