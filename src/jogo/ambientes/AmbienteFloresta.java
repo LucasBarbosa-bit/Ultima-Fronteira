@@ -10,9 +10,9 @@ public class AmbienteFloresta extends Ambiente {
         super("Floresta", "Vegetação densa e úmida, rica em recursos mas cheia de predadores.", 3);
 
         super.recursosDisponiveis.add(new Agua(false, 1.5));
-        super.recursosDisponiveis.add(new Alimento("Fruta Silvestre", 0.1, 3, 8, true));
-        super.recursosDisponiveis.add(new Alimento("Cogumelo Cinzento", 0.2, 10, 3, false));
-        super.recursosDisponiveis.add(new Alimento("Raiz Comestível", 0.3, 10, 12, true));
+        super.recursosDisponiveis.add(new Alimento("Fruta Silvestre", 0.1, 2, 3, true));
+        super.recursosDisponiveis.add(new Alimento("Cogumelo Cinzento", 0.2, 5, 3, false));
+        super.recursosDisponiveis.add(new Alimento("Raiz Comestível", 0.3, 5, 2, true));
         super.recursosDisponiveis.add(new Arma("Galho Pontudo", 0.3, 20, "Lança Improvisada", 10, 10));
         super.recursosDisponiveis.add(new Material("Madeira", 2.0, 100, "madeira", 40));
         super.recursosDisponiveis.add(new Material("Cipó", 0.2, 30, "fibra vegetal", 20));

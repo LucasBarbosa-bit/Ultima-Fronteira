@@ -9,12 +9,12 @@ public class AmbienteCaverna extends Ambiente {
         super("Caverna", "Ambiente escuro e úmido. Pode ser abrigo ou armadilha.", 4);
 
         super.recursosDisponiveis.add(new Agua(false, 1.0));
-        super.recursosDisponiveis.add(new Alimento("Inseto Crocante", 0.1, 5, 3, false));
-        super.recursosDisponiveis.add(new Material("Cristal Bruto", 1.0, 100, "mineral", 100));
+        super.recursosDisponiveis.add(new Alimento("Inseto Crocante", 0.1, 2, 2, false));
+        super.recursosDisponiveis.add(new Material("Cristal Bruto", 3.0, 100, "mineral", 100));
         super.recursosDisponiveis.add(new Material("Rocha Escura", 2.5, 100, "pedra", 100));
-        super.recursosDisponiveis.add(new Ferramenta("Tocha Improvisada", 0.4, 50, "Tocha", 15));
+        super.recursosDisponiveis.add(new Ferramenta("Tocha Improvisada", 1.5, 50, "Tocha", 15));
         super.recursosDisponiveis.add(new Remedio("Mofo Curativo", 0.1, 5, "Fungo", "Evita infecções"));
-        super.recursosDisponiveis.add(new Arma("Adaga Rústica", 0.4, 30, "Lamina", 7, 1));
+        super.recursosDisponiveis.add(new Arma("Adaga Rústica", 0.5, 30, "Lamina", 6, 1));
     }
 
     @Override

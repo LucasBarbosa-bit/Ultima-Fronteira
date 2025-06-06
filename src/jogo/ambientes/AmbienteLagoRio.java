@@ -9,8 +9,8 @@ public class AmbienteLagoRio extends Ambiente {
     public AmbienteLagoRio() {
         super("Lago/Rio", "Fonte de água e alimento, mas com riscos escondidos.", 2);
         super.recursosDisponiveis.add(new Agua(true, 2.0));
-        super.recursosDisponiveis.add(new Alimento("Peixe Cru", 0.5, 5, 15, false));
-        super.recursosDisponiveis.add(new Alimento("Peixe Seco", 0.4, 15, 18, true));
+        super.recursosDisponiveis.add(new Alimento("Peixe Cru", 0.5, 1,5, false));
+        super.recursosDisponiveis.add(new Alimento("Peixe Seco", 0.4, 2, 4, true));
         super.recursosDisponiveis.add(new Ferramenta("Linha de Pesca", 0.1, 20, "Ferramenta de Pesca", 20));
         super.recursosDisponiveis.add(new Material("Argila", 1.0, 50, "barro", 30));
         super.recursosDisponiveis.add(new Remedio("Folha Antisséptica", 0.1, 10, "Planta", "Cicatriza pequenos cortes"));

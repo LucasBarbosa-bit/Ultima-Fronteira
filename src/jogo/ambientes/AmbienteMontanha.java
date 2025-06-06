@@ -10,7 +10,7 @@ public class AmbienteMontanha extends Ambiente {
         super("Montanha", "Região íngreme, clima instável e poucos alimentos naturais.", 5);
 
         super.recursosDisponiveis.add(new Agua(true, 1.0)); //neve
-        super.recursosDisponiveis.add(new Alimento("Raiz de Montanha", 0.3, 5, 10, true));
+        super.recursosDisponiveis.add(new Alimento("Raiz de Montanha", 0.3, 1, 3, true));
         super.recursosDisponiveis.add(new Remedio("Folha de Altitude", 0.1, 3, "Planta", "Aumenta resistência ao frio"));
         super.recursosDisponiveis.add(new Material("Rocha", 3.0, 100, "pedra", 100));
         super.recursosDisponiveis.add(new Material("Gelo", 1.0, 10, "gelo", 10));
