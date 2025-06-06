@@ -1,7 +1,10 @@
 package jogo;
 
 import jogo.eventos.RegistroDeEventos;
+import jogo.personagens.Mecanico;
 import jogo.personagens.Personagem;
+import jogo.personagens.Rastreador;
+import jogo.personagens.SobreviventeNato;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -19,10 +22,41 @@ public class Main {
         String nome = scanner.nextLine();
         System.out.println();
 
-        Personagem jogador = new Personagem(nome);
+        Personagem jogador = null;
+        while (jogador == null) {
+            System.out.println("Escolha sua classe:");
+            System.out.println("1. Sobrevivente Nato (Mais resistente à fome e sede)");
+            System.out.println("2. Rastreador (Maior chance de encontrar recursos)");
+            System.out.println("3. Mecânico (Capaz de criar itens avançados)");
+            System.out.print("--> Sua opção: ");
+
+            int classeEscolhida = -1;
+            try {
+                classeEscolhida = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                // Apenas ignora, o loop tratará a entrada inválida
+            } finally {
+                scanner.nextLine(); // Limpa o buffer
+            }
+
+            switch (classeEscolhida) {
+                case 1:
+                    jogador = new SobreviventeNato(nome);
+                    break;
+                case 2:
+                    jogador = new Rastreador(nome);
+                    break;
+                case 3:
+                    jogador = new Mecanico(nome);
+                    break;
+                default:
+                    System.out.println("Opção inválida! Por favor, escolha uma classe.");
+            }
+        }
+
         RegistroDeEventos.carregarEventos(jogador.getLocalizador().getGerenciadorDeEventos());
 
-        System.out.println("Personagem criado!");
+        System.out.println("\nPersonagem criado!");
         System.out.println("Seja Bem-vindo " + jogador.getNome() + "!");
         System.out.println();
         System.out.println("Você está em um(a) " + jogador.localizacao());
@@ -43,12 +77,15 @@ public class Main {
             System.out.println("4. Ver inventário");
             System.out.println("5. Remover item do inventário");
             System.out.println("6. Ver histórico de ambientes");
-            System.out.println("7. Criar itens"); // Nova opção
+            System.out.println("7. Criar itens");
+            System.out.println("8. Descansar");
             System.out.println("0. Sair do jogo");
 
             System.out.print(" --> Sua opção : ");
 
             int opcao = -1;
+            boolean turnoPassou = false;
+
             try {
                 opcao = scanner.nextInt();
             } catch (InputMismatchException e) {
@@ -61,13 +98,15 @@ public class Main {
                 case 1:
                     jogador.explorar();
                     jogador.sede(-3);
-                    jogador.fome(2);
+                    jogador.fome(5); // Custo de fome aumentado
+                    turnoPassou = true;
                     break;
                 case 2:
                     System.out.print("Digite o nome do item a usar: ");
                     String nomeItemUsar = scanner.nextLine();
                     jogador.usarItem(nomeItemUsar);
                     jogador.gastarEnergia(2);
+                    turnoPassou = true;
                     break;
                 case 3:
                     System.out.println("\nVocê está em: " + jogador.localizacao());
@@ -85,6 +124,7 @@ public class Main {
                         case 5: jogador.mover("Lago/Rio"); break;
                         default: System.out.println("Opção inválida!");
                     }
+                    turnoPassou = true;
                     break;
                 case 4:
                     jogador.mostrarInventario();
@@ -98,8 +138,13 @@ public class Main {
                     jogador.getLocalizador().mostrarHistorico();
                     break;
                 case 7:
-                    jogador.criarItem(); // Nova ação
-                    jogador.gastarEnergia(15); // Crafting consome energia
+                    jogador.criarItem();
+                    jogador.gastarEnergia(15);
+                    turnoPassou = true;
+                    break;
+                case 8:
+                    jogador.tentarDescansar();
+                    turnoPassou = true;
                     break;
                 case 0:
                     System.out.println("Saindo do jogo. Até a próxima!");
@@ -110,10 +155,12 @@ public class Main {
                     break;
             }
 
-            diasSobrevivendo++;
-            if (diasSobrevivendo > DIAS_PARA_VENCER) {
-                vitoria = true;
-                break;
+            if (turnoPassou) {
+                diasSobrevivendo++;
+                if (diasSobrevivendo > DIAS_PARA_VENCER) {
+                    vitoria = true;
+                    break;
+                }
             }
         }
 

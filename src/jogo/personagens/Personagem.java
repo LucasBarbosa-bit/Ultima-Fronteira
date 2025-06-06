@@ -6,14 +6,17 @@ import jogo.itens.Arma;
 import jogo.itens.Item;
 import jogo.sistema.Artesanato;
 import jogo.sistema.Inventario;
+import jogo.sistema.excecoes.InventarioCheioException;
 
-public class Personagem {
-    private String nome;
-    private int vida, alimentacao, sede, energia, sanidade;
-    private Inventario inventario;
-    private Arma arma;
-    private Localizador localizador;
-    private Artesanato artesanato; // Novo atributo
+public abstract class Personagem {
+    protected String nome;
+    protected int vida, alimentacao, sede, energia, sanidade;
+    protected Inventario inventario;
+    protected Arma arma;
+    protected Localizador localizador;
+    protected Artesanato artesanato;
+
+    protected double chanceEncontrarRecursoModifier = 1.0;
 
     public Personagem(String nome) {
         this.nome = nome;
@@ -24,21 +27,16 @@ public class Personagem {
         this.sanidade = 100;
         this.inventario = new Inventario(20.0);
         this.localizador = new Localizador(new GerenciadorDeEventos(this));
-        this.artesanato = new Artesanato(); // Instancia o sistema de criação
-    }
-
-    public void comer(int valor) {
-        alimentacao += valor;
-        if (alimentacao > 100) alimentacao = 100;
+        this.artesanato = new Artesanato();
     }
 
     public void fome(int valor) {
         alimentacao -= valor;
         if (alimentacao < 0) alimentacao = 0;
         if (alimentacao < 20) {
-            System.out.println("\nVocê está com muita fome.");
-            perderVida(5);
-            perderSanidade(2);
+            System.out.println("\nSua barriga ronca de fome. Você se sente fraco.");
+            perderVida(8); // Penalidade de vida aumentada
+            perderSanidade(4); // Penalidade de sanidade aumentada
         }
     }
 
@@ -58,6 +56,19 @@ public class Personagem {
         if (energia > 100) energia = 100;
         ganharSanidade(5);
         System.out.println("Você descansa um pouco e recupera suas forças e sua mente.");
+    }
+
+    public void tentarDescansar() {
+        System.out.println("Você encontra um local relativamente seguro para descansar por um tempo...");
+        descansar();
+        fome(15);    // Custo de fome aumentado
+        sede(-10);
+        gerarEvento();
+    }
+
+    public void comer(int valor) {
+        alimentacao += valor;
+        if (alimentacao > 100) alimentacao = 100;
     }
 
     public void equiparArma(Arma arma) {
@@ -113,7 +124,7 @@ public class Personagem {
             this.localizador.mudarAmbiente(nomeAmbiente);
             this.gastarEnergia(10);
             sede(-5);
-            fome(5);
+            fome(8); // Custo de fome aumentado
             gerarEvento();
         } else {
             System.out.println("Você está cansado demais para se mover.");
@@ -133,6 +144,8 @@ public class Personagem {
         gerarEvento();
     }
 
+
+
     public void gerarEvento() {
         this.localizador.gerarEventoAtual(this);
     }
@@ -146,11 +159,11 @@ public class Personagem {
     public Inventario getInventario() { return inventario; }
 
     public void adicionarItem(Item item) {
-        boolean sucesso = inventario.adicionarItem(item);
-        if (sucesso) {
+        try {
+            inventario.adicionarItem(item);
             System.out.println("Item adicionado ao inventário: " + item.getNome());
-        } else {
-            System.out.println("Não foi possível coletar " + item.getNome() + " (peso excedido).");
+        } catch (InventarioCheioException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -180,4 +193,5 @@ public class Personagem {
     public int getSede() {return sede;}
     public int getEnergia() {return energia;}
     public int getSanidade() {return sanidade;}
+    public double getChanceEncontrarRecursoModifier() { return chanceEncontrarRecursoModifier; }
 }

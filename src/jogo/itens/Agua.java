@@ -16,7 +16,7 @@ public class Agua extends Item {
         if (pureza) {
             System.out.println("A sede foi saciada em 20 pontos");
 
-            jogador.sede(-20);
+            jogador.sede(20);
             jogador.ganharvida(1);
         } else {
             System.out.println("Você bebeu " + nome + " e agora está contaminada.");

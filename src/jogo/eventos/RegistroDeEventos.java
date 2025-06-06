@@ -38,7 +38,7 @@ public class RegistroDeEventos {
                 "Frio e Umidade", 5) {
             @Override
             public void executar(Personagem jogador, Ambiente ambiente) {
-                System.out.println("🌧️ A tempestade te desgasta. Você perde energia.");
+                System.out.println("A tempestade te desgasta. Você perde energia.");
                 jogador.gastarEnergia(15);
                 jogador.perderSanidade(5);
             }

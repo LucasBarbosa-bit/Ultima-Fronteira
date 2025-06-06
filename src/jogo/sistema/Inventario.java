@@ -1,6 +1,7 @@
 package jogo.sistema;
 
 import jogo.itens.*;
+import jogo.sistema.excecoes.InventarioCheioException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,10 @@ public class Inventario {
         this.pesoMaximo = pesoMaximo;
     }
 
-    public boolean adicionarItem(Item item) {
+    public void adicionarItem(Item item) throws InventarioCheioException {
         if (pesoAtual() + item.getPeso() > pesoMaximo) {
-            return false; // Falha se o peso exceder o máximo
+            // Em vez de retornar false, agora lança a exceção
+            throw new InventarioCheioException("Não foi possível coletar " + item.getNome() + " (peso excedido).");
         }
 
         if (item instanceof Agua) {
@@ -29,24 +31,20 @@ public class Inventario {
             if (aguaExistenteOpt.isPresent()) {
                 Agua aguaInventario = (Agua) aguaExistenteOpt.get();
 
-                // Combina a água
                 double pesoTotal = aguaInventario.getPeso() + aguaNova.getPeso();
                 int novaDurabilidade = aguaInventario.getDurabilidade() + aguaNova.getDurabilidade();
 
                 aguaInventario.setPeso(pesoTotal);
                 aguaInventario.setDurabilidade(novaDurabilidade);
 
-                // Se a água nova for impura, contamina toda a pilha
                 if (!aguaNova.getPureza()) {
                     aguaInventario.setPureza(false);
                 }
-                return true;
+                return; // Finaliza o método após combinar
             }
         }
 
-        // Para outros itens ou se não houver água existente, adiciona normalmente
         itens.add(item);
-        return true;
     }
 
     public boolean removerItem(String nome) {
@@ -65,7 +63,6 @@ public class Inventario {
         }
         return null;
     }
-
 
     public void listarItens() {
         if (itens.isEmpty()) {
@@ -97,7 +94,6 @@ public class Inventario {
         }
         return melhor;
     }
-
 
     public double getPesoMaximo() {
         return pesoMaximo;

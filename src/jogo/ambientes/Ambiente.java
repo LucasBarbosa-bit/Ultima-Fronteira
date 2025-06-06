@@ -1,9 +1,9 @@
 package jogo.ambientes;
 
 import java.util.*;
-
 import jogo.itens.Item;
 import jogo.personagens.Personagem;
+import jogo.sistema.excecoes.InventarioCheioException;
 
 public abstract class Ambiente {
     protected String nome;
@@ -24,14 +24,14 @@ public abstract class Ambiente {
         System.out.println("Você começa a explorar o ambiente: " + nome + "...");
         Random rand = new Random();
 
-        int quantidade = rand.nextInt(3) + 1;
+        // A quantidade de itens encontrados agora é afetada pela habilidade do Rastreador
+        int quantidade = (int) Math.round((rand.nextInt(3) + 1) * jogador.getChanceEncontrarRecursoModifier());
 
         if (recursosDisponiveis.isEmpty()) {
             System.out.println("Nada foi encontrado aqui.");
             return;
         }
 
-        // Sorteio
         Set<Item> encontrados = new HashSet<>();
         for (int i = 0; i < quantidade && i < recursosDisponiveis.size(); i++) {
             Item item = recursosDisponiveis.get(rand.nextInt(recursosDisponiveis.size()));
@@ -51,7 +51,6 @@ public abstract class Ambiente {
             i++;
         }
 
-        // escolha dos itens a coletar
         Scanner scanner = new Scanner(System.in);
         System.out.println("Digite os números dos itens que deseja coletar (ex: 1 3), ou deixe em branco para nenhum:");
         String resposta = scanner.nextLine();
@@ -67,11 +66,11 @@ public abstract class Ambiente {
                 int escolha = Integer.parseInt(s);
                 if (escolha > 0 && escolha <= lista.size()) {
                     Item item = lista.get(escolha - 1);
-                    boolean sucesso = jogador.getInventario().adicionarItem(item);
-                    if (sucesso) {
+                    try {
+                        jogador.getInventario().adicionarItem(item);
                         System.out.println("Você coletou: " + item.getNome());
-                    } else {
-                        System.out.println("Não foi possível coletar " + item.getNome() + " (peso excedido).");
+                    } catch (InventarioCheioException e) {
+                        System.out.println(e.getMessage());
                     }
                 }
             } catch (NumberFormatException e) {
@@ -79,7 +78,6 @@ public abstract class Ambiente {
             }
         }
     }
-
 
     public abstract void gerarEvento();
     public abstract void modificarClima();

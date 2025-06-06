@@ -1,40 +1,57 @@
 package jogo.sistema;
 
 import jogo.itens.*;
+import jogo.personagens.Mecanico;
 import jogo.personagens.Personagem;
+import jogo.sistema.excecoes.InventarioCheioException;
 
 import java.util.*;
 
 public class Artesanato {
-    private List<Receita> receitas;
+    private List<Receita> receitasComuns;
+    private List<Receita> receitasMecanico; // Receitas especiais
 
     public Artesanato() {
-        this.receitas = new ArrayList<>();
+        this.receitasComuns = new ArrayList<>();
+        this.receitasMecanico = new ArrayList<>();
         carregarReceitas();
     }
 
     private void carregarReceitas() {
-        // Receita 1: Lança de Madeira
+        // --- Receitas Comuns ---
         Map<String, Integer> ingLanc = new HashMap<>();
         ingLanc.put("Galho Pontudo", 1);
         ingLanc.put("Cipó", 1);
-        receitas.add(new Receita(ingLanc, new Arma("Lança de Madeira", 0.8, 30, "Lança", 12, 12)));
+        receitasComuns.add(new Receita(ingLanc, new Arma("Lança de Madeira", 0.8, 30, "Lança", 12, 12)));
 
-        // Receita 2: Machado Rústico
         Map<String, Integer> ingMach = new HashMap<>();
         ingMach.put("Galho Pontudo", 1);
         ingMach.put("Rocha", 1);
         ingMach.put("Cipó", 1);
-        receitas.add(new Receita(ingMach, new Ferramenta("Machado Rústico", 2.5, 50, "Machado", 30)));
+        receitasComuns.add(new Receita(ingMach, new Ferramenta("Machado Rústico", 2.5, 50, "Machado", 30)));
+
+        // --- Receitas de Mecânico ---
+        Map<String, Integer> ingEscudo = new HashMap<>();
+        ingEscudo.put("Madeira", 2);
+        ingEscudo.put("Cipó", 2);
+        receitasMecanico.add(new Receita(ingEscudo, new Ferramenta("Escudo de Madeira", 3.0, 100, "Escudo", 100)));
     }
 
     public void mostrarInterfaceDeCriacao(Personagem jogador) {
         System.out.println("\n--- Criação de Itens ---");
         List<Receita> receitasPossiveis = new ArrayList<>();
 
-        for (Receita receita : receitas) {
+        for (Receita receita : receitasComuns) {
             if (podeCriar(receita, jogador.getInventario())) {
                 receitasPossiveis.add(receita);
+            }
+        }
+
+        if (jogador instanceof Mecanico) {
+            for (Receita receita : receitasMecanico) {
+                if (podeCriar(receita, jogador.getInventario())) {
+                    receitasPossiveis.add(receita);
+                }
             }
         }
 
@@ -70,18 +87,32 @@ public class Artesanato {
     }
 
     private void criarItem(Receita receita, Personagem jogador) {
-        // Remover ingredientes
+        Item itemCriado = receita.getResultado();
+        Inventario inventario = jogador.getInventario();
+
+        // 1. Verifica se há espaço ANTES de consumir os ingredientes
+        if (inventario.pesoAtual() + itemCriado.getPeso() > inventario.getPesoMaximo()) {
+            System.out.println("Falha na criação: Não há espaço suficiente no inventário para " + itemCriado.getNome() + ".");
+            return;
+        }
+
+        // 2. Se houver espaço, consome os ingredientes
         for (Map.Entry<String, Integer> ingrediente : receita.getIngredientes().entrySet()) {
-            Item item = jogador.getInventario().buscarItem(ingrediente.getKey());
+            Item item = inventario.buscarItem(ingrediente.getKey());
             item.reduzirDurabilidade(ingrediente.getValue());
             if (item.getDurabilidade() <= 0) {
-                jogador.getInventario().removerItem(item.getNome());
+                inventario.removerItem(item.getNome());
             }
         }
 
-        // Adicionar resultado
-        Item itemCriado = receita.getResultado();
-        jogador.getInventario().adicionarItem(itemCriado);
-        System.out.println("Você criou: " + itemCriado.getNome() + "!");
+        // 3. Adiciona o item criado. Envolvemos em try-catch para o compilador.
+        try {
+            inventario.adicionarItem(itemCriado);
+            System.out.println("Você criou: " + itemCriado.getNome() + "!");
+        } catch (InventarioCheioException e) {
+            // Esta exceção não deve mais acontecer aqui devido à verificação acima,
+            // mas o tratamento é mantido por segurança.
+            System.out.println("Ocorreu um erro inesperado: " + e.getMessage());
+        }
     }
 }

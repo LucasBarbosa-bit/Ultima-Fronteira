@@ -21,7 +21,6 @@ public class EventoDoencaFerimento extends Evento {
 
     @Override
     public void executar(Personagem jogador, Ambiente local) {
-        System.out.println("Evento de saúde: " + nome);
         System.out.println(super.descricao);
         jogador.perderVida(impactoVida);
         jogador.gastarEnergia(impactoEnergia);
