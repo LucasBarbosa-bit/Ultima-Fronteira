@@ -11,36 +11,37 @@ public class Inventario {
     private List<Item> itens;
     private double pesoMaximo;
 
+    // ... construtor ...
     public Inventario(double pesoMaximo) {
         this.itens = new ArrayList<>();
         this.pesoMaximo = pesoMaximo;
     }
 
+    public List<Item> getItens() {
+        return itens;
+    }
+
+    // ... resto da classe sem alterações ...
     public void adicionarItem(Item item) throws InventarioCheioException {
         if (pesoAtual() + item.getPeso() > pesoMaximo) {
-            // Em vez de retornar false, agora lança a exceção
             throw new InventarioCheioException("Não foi possível coletar " + item.getNome() + " (peso excedido).");
         }
 
         if (item instanceof Agua) {
-            Agua aguaNova = (Agua) item;
             Optional<Item> aguaExistenteOpt = itens.stream()
                     .filter(i -> i instanceof Agua)
                     .findFirst();
 
             if (aguaExistenteOpt.isPresent()) {
                 Agua aguaInventario = (Agua) aguaExistenteOpt.get();
-
-                double pesoTotal = aguaInventario.getPeso() + aguaNova.getPeso();
-                int novaDurabilidade = aguaInventario.getDurabilidade() + aguaNova.getDurabilidade();
-
+                double pesoTotal = aguaInventario.getPeso() + item.getPeso();
+                int novaDurabilidade = aguaInventario.getDurabilidade() + item.getDurabilidade();
                 aguaInventario.setPeso(pesoTotal);
                 aguaInventario.setDurabilidade(novaDurabilidade);
-
-                if (!aguaNova.getPureza()) {
+                if (!((Agua) item).getPureza()) {
                     aguaInventario.setPureza(false);
                 }
-                return; // Finaliza o método após combinar
+                return;
             }
         }
 
@@ -48,7 +49,8 @@ public class Inventario {
     }
 
     public boolean removerItem(String nome) {
-        return itens.removeIf(item -> item.getNome().equalsIgnoreCase(nome));
+        String nomeNormalizado = FerramentasDeTexto.normalizar(nome);
+        return itens.removeIf(item -> FerramentasDeTexto.normalizar(item.getNome()).equals(nomeNormalizado));
     }
 
     public double pesoAtual() {
@@ -56,13 +58,15 @@ public class Inventario {
     }
 
     public Item buscarItem(String nomeItem) {
+        String nomeNormalizado = FerramentasDeTexto.normalizar(nomeItem);
         for (Item item : itens) {
-            if (item.getNome().equalsIgnoreCase(nomeItem)) {
+            if (FerramentasDeTexto.normalizar(item.getNome()).equals(nomeNormalizado)) {
                 return item;
             }
         }
         return null;
     }
+
 
     public void listarItens() {
         if (itens.isEmpty()) {
@@ -94,6 +98,7 @@ public class Inventario {
         }
         return melhor;
     }
+
 
     public double getPesoMaximo() {
         return pesoMaximo;

@@ -22,7 +22,7 @@ public class RegistroDeEventos {
         EventoCriatura urso = new EventoCriatura(
                 "Emboscada de Urso",
                 "Você despertou um urso hibernando!",
-                0.4,
+                0.5,
                 "vida",
                 "Montanha", // Localização requerida
                 "Urso Cinzento", 10

@@ -8,12 +8,12 @@ public class SobreviventeNato extends Personagem {
     @Override
     public void fome(int valor) {
         // O Sobrevivente Nato sente menos os efeitos da fome
-        super.fome(valor / 2);
+        super.fome((int)  (valor / 1.4));
     }
 
     @Override
     public void sede(int valor) {
         // O Sobrevivente Nato sente menos os efeitos da sede
-        super.sede(valor / 2);
+        super.sede((int) (valor / 1.4));
     }
 }

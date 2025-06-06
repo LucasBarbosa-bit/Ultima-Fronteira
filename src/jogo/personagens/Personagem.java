@@ -8,16 +8,21 @@ import jogo.sistema.Artesanato;
 import jogo.sistema.Inventario;
 import jogo.sistema.excecoes.InventarioCheioException;
 
+import java.util.List;
+import java.util.Scanner;
+
 public abstract class Personagem {
+    // ... atributos ...
     protected String nome;
     protected int vida, alimentacao, sede, energia, sanidade;
     protected Inventario inventario;
     protected Arma arma;
     protected Localizador localizador;
     protected Artesanato artesanato;
-
+    private int turnosParaDescansarDeNovo = 0;
     protected double chanceEncontrarRecursoModifier = 1.0;
 
+    // ... construtor ...
     public Personagem(String nome) {
         this.nome = nome;
         this.vida = 100;
@@ -30,18 +35,27 @@ public abstract class Personagem {
         this.artesanato = new Artesanato();
     }
 
+    public void passarTurno() {
+        if (turnosParaDescansarDeNovo > 0) {
+            turnosParaDescansarDeNovo--;
+        }
+        // Custo metabólico base para cada turno que passa
+        fome(10);
+        sede(-15);
+    }
+
     public void fome(int valor) {
         alimentacao -= valor;
         if (alimentacao < 0) alimentacao = 0;
         if (alimentacao < 20) {
             System.out.println("\nSua barriga ronca de fome. Você se sente fraco.");
-            perderVida(8); // Penalidade de vida aumentada
-            perderSanidade(4); // Penalidade de sanidade aumentada
+            perderVida(8);
+            perderSanidade(4);
         }
     }
 
     public void sede(int valor) {
-        sede += valor;
+        sede += valor; // O valor passado é negativo para diminuir
         if (sede > 100) sede = 100;
         if (sede < 0) sede = 0;
         if (sede < 20) {
@@ -51,19 +65,75 @@ public abstract class Personagem {
         }
     }
 
-    public void descansar() {
-        energia += 20;
-        if (energia > 100) energia = 100;
-        ganharSanidade(5);
-        System.out.println("Você descansa um pouco e recupera suas forças e sua mente.");
+    public void explorar(){
+        gastarEnergia(15);
+        this.localizador.getAmbienteAtual().explorar(this);
+        gerarEvento();
     }
 
-    public void tentarDescansar() {
+    public void mover(String nomeAmbiente) {
+        if (this.getEnergia() > 20){ // Aumentei o requisito de energia para mover
+            this.localizador.mudarAmbiente(nomeAmbiente);
+            gastarEnergia(20);
+            fome(4);   // Custo adicional pelo esforço
+            sede(-4);  // Custo adicional pelo esforço
+            gerarEvento();
+        } else {
+            System.out.println("Você está cansado demais para uma longa viagem.");
+        }
+    }
+
+    public void descansar() {
+        energia += 25;
+        if (energia > 100) energia = 100;
+        ganharSanidade(5);
+    }
+
+    public boolean tentarDescansar() {
+        if (turnosParaDescansarDeNovo > 0) {
+            System.out.println("Você ainda precisa se recuperar do último descanso. Continue em frente.");
+            return false;
+        }
+
         System.out.println("Você encontra um local relativamente seguro para descansar por um tempo...");
         descansar();
-        fome(15);    // Custo de fome aumentado
-        sede(-10);
+        System.out.println("O descanso recupera suas forças, mas consome suas reservas de comida e água.");
+        fome(5);   // Custo adicional por um longo período parado
+        sede(-5);  // Custo adicional por um longo período parado
+        this.turnosParaDescansarDeNovo = 3;
+        System.out.println("(Você precisará de 3 dias para poder descansar novamente)");
         gerarEvento();
+        return true;
+    }
+
+    // ... O resto da classe permanece igual ...
+
+    public boolean mostrarMenuParaUsarItem() {
+        List<Item> itens = inventario.getItens();
+        if (itens.isEmpty()) {
+            System.out.println("Seu inventário está vazio.");
+            return false;
+        }
+
+        System.out.println("\n--- Usar Item ---");
+        for (int i = 0; i < itens.size(); i++) {
+            System.out.println((i + 1) + ". " + itens.get(i).getNome());
+        }
+        System.out.println("0. Cancelar");
+        System.out.print("Qual item você deseja usar? ");
+
+        Scanner scanner = new Scanner(System.in);
+        int escolha = scanner.nextInt();
+        scanner.nextLine();
+
+        if (escolha > 0 && escolha <= itens.size()) {
+            Item itemEscolhido = itens.get(escolha - 1);
+            itemEscolhido.usar(this);
+            return true;
+        }
+
+        System.out.println("Ação cancelada.");
+        return false;
     }
 
     public void comer(int valor) {
@@ -119,18 +189,6 @@ public abstract class Personagem {
 
     public void mostrarInventario() { inventario.listarItens(); }
 
-    public void mover(String nomeAmbiente) {
-        if (this.getEnergia() > 10){
-            this.localizador.mudarAmbiente(nomeAmbiente);
-            this.gastarEnergia(10);
-            sede(-5);
-            fome(8); // Custo de fome aumentado
-            gerarEvento();
-        } else {
-            System.out.println("Você está cansado demais para se mover.");
-        }
-    }
-
     public String localizacao(){
         return this.localizador.getAmbienteAtual().getNome();
     }
@@ -139,21 +197,8 @@ public abstract class Personagem {
         return this.localizador.getAmbienteAtual().getNome() != null && this.localizador.getAmbienteAtual().getNome().equalsIgnoreCase(nomeAmbiente);
     }
 
-    public void explorar(){
-        this.localizador.getAmbienteAtual().explorar(this);
-        gerarEvento();
-    }
-
-
-
     public void gerarEvento() {
         this.localizador.gerarEventoAtual(this);
-    }
-
-    public void usarItem(String nome) {
-        Item item = inventario.buscarItem(nome);
-        if (item != null) item.usar(this);
-        else System.out.println("Item não foi encontrado.");
     }
 
     public Inventario getInventario() { return inventario; }

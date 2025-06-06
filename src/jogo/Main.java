@@ -36,7 +36,7 @@ public class Main {
             } catch (InputMismatchException e) {
                 // Apenas ignora, o loop tratará a entrada inválida
             } finally {
-                scanner.nextLine(); // Limpa o buffer
+                scanner.nextLine();
             }
 
             switch (classeEscolhida) {
@@ -70,18 +70,20 @@ public class Main {
             System.out.println("Vida: " + jogador.getVida() + " | Fome: " + jogador.getAlimentacao() +
                     " | Sede: " + jogador.getSede() + " | Energia: " + jogador.getEnergia() + " | Sanidade: " + jogador.getSanidade());
 
-            System.out.println("\n Escolha sua ação:");
+            System.out.println("\n--- Ações (Passam o dia) ---");
             System.out.println("1. Explorar ambiente");
-            System.out.println("2. Usar item");
-            System.out.println("3. Mover para outro ambiente");
-            System.out.println("4. Ver inventário");
-            System.out.println("5. Remover item do inventário");
-            System.out.println("6. Ver histórico de ambientes");
-            System.out.println("7. Criar itens");
-            System.out.println("8. Descansar");
-            System.out.println("0. Sair do jogo");
+            System.out.println("2. Mover para outro ambiente");
+            System.out.println("3. Criar itens");
+            System.out.println("4. Descansar");
+            System.out.println("\n--- Ações Livres ---");
+            System.out.println("5. Usar item");
+            System.out.println("6. Ver inventário");
+            System.out.println("7. Ver histórico de ambientes");
+            System.out.println("8. Remover item do inventário");
 
+            System.out.println("\n0. Sair do jogo");
             System.out.print(" --> Sua opção : ");
+
 
             int opcao = -1;
             boolean turnoPassou = false;
@@ -95,20 +97,11 @@ public class Main {
             }
 
             switch (opcao) {
-                case 1:
+                case 1: // Explorar
                     jogador.explorar();
-                    jogador.sede(-3);
-                    jogador.fome(5); // Custo de fome aumentado
                     turnoPassou = true;
                     break;
-                case 2:
-                    System.out.print("Digite o nome do item a usar: ");
-                    String nomeItemUsar = scanner.nextLine();
-                    jogador.usarItem(nomeItemUsar);
-                    jogador.gastarEnergia(2);
-                    turnoPassou = true;
-                    break;
-                case 3:
+                case 2: // Mover
                     System.out.println("\nVocê está em: " + jogador.localizacao());
                     System.out.println();
                     jogador.getLocalizador().mostrarAmbientesDisponiveis();
@@ -126,25 +119,27 @@ public class Main {
                     }
                     turnoPassou = true;
                     break;
-                case 4:
+                case 3: // Criar Itens
+                    jogador.criarItem();
+                    turnoPassou = true;
+                    break;
+                case 4: // Descansar
+                    boolean descansou = jogador.tentarDescansar();
+                    turnoPassou = descansou;
+                    break;
+                case 5: // Usar Item (Ação Livre)
+                    jogador.mostrarMenuParaUsarItem();
+                    break;
+                case 6: // Ver Inventário
                     jogador.mostrarInventario();
                     break;
-                case 5:
+                case 7: // Ver Histórico
+                    jogador.getLocalizador().mostrarHistorico();
+                    break;
+                case 8: // Remover Item
                     System.out.print("Digite o nome do item a remover: ");
                     String nomeItemRemover = scanner.nextLine();
                     jogador.removerItem(nomeItemRemover);
-                    break;
-                case 6:
-                    jogador.getLocalizador().mostrarHistorico();
-                    break;
-                case 7:
-                    jogador.criarItem();
-                    jogador.gastarEnergia(15);
-                    turnoPassou = true;
-                    break;
-                case 8:
-                    jogador.tentarDescansar();
-                    turnoPassou = true;
                     break;
                 case 0:
                     System.out.println("Saindo do jogo. Até a próxima!");
@@ -157,6 +152,7 @@ public class Main {
 
             if (turnoPassou) {
                 diasSobrevivendo++;
+                jogador.passarTurno();
                 if (diasSobrevivendo > DIAS_PARA_VENCER) {
                     vitoria = true;
                     break;
